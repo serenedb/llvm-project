@@ -13,6 +13,7 @@ if (NOT LIBCXXABI_USE_COMPILER_RT)
     check_library_exists(gcc __aeabi_uldivmod "" LIBCXXABI_HAS_GCC_LIB)
   endif ()
 endif ()
+set(LIBCXXABI_HAS_C_LIB NO)
 
 # libc++abi is using -nostdlib++ at the link step when available,
 # otherwise -nodefaultlibs is used. We want all our checks to also
@@ -111,3 +112,6 @@ else()
   check_library_exists(c __cxa_thread_atexit_impl ""
     LIBCXXABI_HAS_CXA_THREAD_ATEXIT_IMPL)
 endif()
+
+set(LIBCXXABI_HAS_DL_LIB NO)
+set(LIBCXXABI_HAS_PTHREAD_LIB NO)

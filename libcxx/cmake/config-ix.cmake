@@ -131,3 +131,7 @@ else()
   check_library_exists(rt clock_gettime "" LIBCXX_HAS_RT_LIB)
   check_library_exists(atomic __atomic_fetch_add_8 "" LIBCXX_HAS_ATOMIC_LIB)
 endif()
+
+set(LIBCXX_HAS_PTHREAD_LIB NO)
+set(LIBCXX_HAS_RT_LIB NO)
+set(LIBCXX_HAS_ATOMIC_LIB NO)
