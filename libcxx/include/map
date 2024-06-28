@@ -17,7 +17,7 @@
 namespace std
 {
 
-template <class Key, class T, class Compare = less<Key>,
+template <class Key, class T, class Compare = less<>,
           class Allocator = allocator<pair<const Key, T>>>
 class map
 {
@@ -231,32 +231,32 @@ public:
 };
 
 template <class InputIterator,
-      class Compare = less<iter_key_t<InputIterator>>,
+      class Compare = less<>,
       class Allocator = allocator<iter_to_alloc_t<InputIterator>>>
 map(InputIterator, InputIterator, Compare = Compare(), Allocator = Allocator())
   -> map<iter_key_t<InputIterator>, iter_val_t<InputIterator>, Compare, Allocator>; // C++17
 
-template<ranges::input_range R, class Compare = less<range-key-type<R>,
+template<ranges::input_range R, class Compare = less<>,
          class Allocator = allocator<range-to-alloc-type<R>>>
   map(from_range_t, R&&, Compare = Compare(), Allocator = Allocator())
     -> map<range-key-type<R>, range-mapped-type<R>, Compare, Allocator>; // C++23
 
-template<class Key, class T, class Compare = less<Key>,
+template<class Key, class T, class Compare = less<>,
     class Allocator = allocator<pair<const Key, T>>>
 map(initializer_list<pair<const Key, T>>, Compare = Compare(), Allocator = Allocator())
   -> map<Key, T, Compare, Allocator>; // C++17
 
 template <class InputIterator, class Allocator>
 map(InputIterator, InputIterator, Allocator)
-  -> map<iter_key_t<InputIterator>, iter_val_t<InputIterator>, less<iter_key_t<InputIterator>>,
+  -> map<iter_key_t<InputIterator>, iter_val_t<InputIterator>, less<>,
     Allocator>; // C++17
 
 template<ranges::input_range R, class Allocator>
   map(from_range_t, R&&, Allocator)
-    -> map<range-key-type<R>, range-mapped-type<R>, less<range-key-type<R>>, Allocator>; // C++23
+    -> map<range-key-type<R>, range-mapped-type<R>, less<>, Allocator>; // C++23
 
 template<class Key, class T, class Allocator>
-map(initializer_list<pair<const Key, T>>, Allocator) -> map<Key, T, less<Key>, Allocator>; // C++17
+map(initializer_list<pair<const Key, T>>, Allocator) -> map<Key, T, less<>, Allocator>; // C++17
 
 template <class Key, class T, class Compare, class Allocator>
 bool
@@ -304,7 +304,7 @@ typename map<Key, T, Compare, Allocator>::size_type
 erase_if(map<Key, T, Compare, Allocator>& c, Predicate pred);  // C++20
 
 
-template <class Key, class T, class Compare = less<Key>,
+template <class Key, class T, class Compare = less<>,
           class Allocator = allocator<pair<const Key, T>>>
 class multimap
 {
@@ -493,17 +493,17 @@ public:
 };
 
 template <class InputIterator,
-      class Compare = less<iter_key_t<InputIterator>>,
+      class Compare = less<>,
       class Allocator = allocator<iter_to_alloc_t<InputIterator>>>
 multimap(InputIterator, InputIterator, Compare = Compare(), Allocator = Allocator())
   -> multimap<iter_key_t<InputIterator>, iter_val_t<InputIterator>, Compare, Allocator>; // C++17
 
-template<ranges::input_range R, class Compare = less<range-key-type<R>>,
+template<ranges::input_range R, class Compare = less<>,
           class Allocator = allocator<range-to-alloc-type<R>>>
   multimap(from_range_t, R&&, Compare = Compare(), Allocator = Allocator())
     -> multimap<range-key-type<R>, range-mapped-type<R>, Compare, Allocator>; // C++23
 
-template<class Key, class T, class Compare = less<Key>,
+template<class Key, class T, class Compare = less<>,
     class Allocator = allocator<pair<const Key, T>>>
 multimap(initializer_list<pair<const Key, T>>, Compare = Compare(), Allocator = Allocator())
   -> multimap<Key, T, Compare, Allocator>; // C++17
@@ -511,15 +511,15 @@ multimap(initializer_list<pair<const Key, T>>, Compare = Compare(), Allocator = 
 template <class InputIterator, class Allocator>
 multimap(InputIterator, InputIterator, Allocator)
   -> multimap<iter_key_t<InputIterator>, iter_val_t<InputIterator>,
-    less<iter_key_t<InputIterator>>, Allocator>; // C++17
+    less<>, Allocator>; // C++17
 
 template<ranges::input_range R, class Allocator>
   multimap(from_range_t, R&&, Allocator)
-    -> multimap<range-key-type<R>, range-mapped-type<R>, less<range-key-type<R>>, Allocator>; // C++23
+    -> multimap<range-key-type<R>, range-mapped-type<R>, less<>, Allocator>; // C++23
 
 template<class Key, class T, class Allocator>
 multimap(initializer_list<pair<const Key, T>>, Allocator)
-  -> multimap<Key, T, less<Key>, Allocator>; // C++17
+  -> multimap<Key, T, less<>, Allocator>; // C++17
 
 template <class Key, class T, class Compare, class Allocator>
 bool
@@ -971,7 +971,7 @@ public:
   friend class _LIBCPP_TEMPLATE_VIS __tree_const_iterator;
 };
 
-template <class _Key, class _Tp, class _Compare = less<_Key>, class _Allocator = allocator<pair<const _Key, _Tp> > >
+template <class _Key, class _Tp, class _Compare = less<>, class _Allocator = allocator<pair<const _Key, _Tp> > >
 class _LIBCPP_TEMPLATE_VIS map {
 public:
   // types:
@@ -1458,7 +1458,7 @@ private:
 
 #  if _LIBCPP_STD_VER >= 17
 template <class _InputIterator,
-          class _Compare   = less<__iter_key_type<_InputIterator>>,
+          class _Compare   = less<>,
           class _Allocator = allocator<__iter_to_alloc_type<_InputIterator>>,
           class            = enable_if_t<__has_input_iterator_category<_InputIterator>::value, void>,
           class            = enable_if_t<!__is_allocator<_Compare>::value, void>,
@@ -1468,7 +1468,7 @@ map(_InputIterator, _InputIterator, _Compare = _Compare(), _Allocator = _Allocat
 
 #    if _LIBCPP_STD_VER >= 23
 template <ranges::input_range _Range,
-          class _Compare   = less<__range_key_type<_Range>>,
+          class _Compare   = less<>,
           class _Allocator = allocator<__range_to_alloc_type<_Range>>,
           class            = enable_if_t<!__is_allocator<_Compare>::value, void>,
           class            = enable_if_t<__is_allocator<_Allocator>::value, void>>
@@ -1478,7 +1478,7 @@ map(from_range_t, _Range&&, _Compare = _Compare(), _Allocator = _Allocator())
 
 template <class _Key,
           class _Tp,
-          class _Compare   = less<remove_const_t<_Key>>,
+          class _Compare   = less<>,
           class _Allocator = allocator<pair<const _Key, _Tp>>,
           class            = enable_if_t<!__is_allocator<_Compare>::value, void>,
           class            = enable_if_t<__is_allocator<_Allocator>::value, void>>
@@ -1493,18 +1493,18 @@ template <class _InputIterator,
 map(_InputIterator, _InputIterator, _Allocator)
     -> map<__iter_key_type<_InputIterator>,
            __iter_mapped_type<_InputIterator>,
-           less<__iter_key_type<_InputIterator>>,
+           less<>,
            _Allocator>;
 
 #    if _LIBCPP_STD_VER >= 23
 template <ranges::input_range _Range, class _Allocator, class = enable_if_t<__is_allocator<_Allocator>::value, void>>
 map(from_range_t, _Range&&, _Allocator)
-    -> map<__range_key_type<_Range>, __range_mapped_type<_Range>, less<__range_key_type<_Range>>, _Allocator>;
+    -> map<__range_key_type<_Range>, __range_mapped_type<_Range>, less<>, _Allocator>;
 #    endif
 
 template <class _Key, class _Tp, class _Allocator, class = enable_if_t<__is_allocator<_Allocator>::value, void>>
 map(initializer_list<pair<_Key, _Tp>>,
-    _Allocator) -> map<remove_const_t<_Key>, _Tp, less<remove_const_t<_Key>>, _Allocator>;
+    _Allocator) -> map<remove_const_t<_Key>, _Tp, less<>, _Allocator>;
 #  endif
 
 #  ifndef _LIBCPP_CXX03_LANG
@@ -1656,7 +1656,7 @@ struct __container_traits<map<_Key, _Tp, _Compare, _Allocator> > {
   static _LIBCPP_CONSTEXPR const bool __emplacement_has_strong_exception_safety_guarantee = true;
 };
 
-template <class _Key, class _Tp, class _Compare = less<_Key>, class _Allocator = allocator<pair<const _Key, _Tp> > >
+template <class _Key, class _Tp, class _Compare = less<>, class _Allocator = allocator<pair<const _Key, _Tp> > >
 class _LIBCPP_TEMPLATE_VIS multimap {
 public:
   // types:
@@ -2045,7 +2045,7 @@ private:
 
 #  if _LIBCPP_STD_VER >= 17
 template <class _InputIterator,
-          class _Compare   = less<__iter_key_type<_InputIterator>>,
+          class _Compare   = less<>,
           class _Allocator = allocator<__iter_to_alloc_type<_InputIterator>>,
           class            = enable_if_t<__has_input_iterator_category<_InputIterator>::value, void>,
           class            = enable_if_t<!__is_allocator<_Compare>::value, void>,
@@ -2055,7 +2055,7 @@ multimap(_InputIterator, _InputIterator, _Compare = _Compare(), _Allocator = _Al
 
 #    if _LIBCPP_STD_VER >= 23
 template <ranges::input_range _Range,
-          class _Compare   = less<__range_key_type<_Range>>,
+          class _Compare   = less<>,
           class _Allocator = allocator<__range_to_alloc_type<_Range>>,
           class            = enable_if_t<!__is_allocator<_Compare>::value, void>,
           class            = enable_if_t<__is_allocator<_Allocator>::value, void>>
@@ -2065,7 +2065,7 @@ multimap(from_range_t, _Range&&, _Compare = _Compare(), _Allocator = _Allocator(
 
 template <class _Key,
           class _Tp,
-          class _Compare   = less<remove_const_t<_Key>>,
+          class _Compare   = less<>,
           class _Allocator = allocator<pair<const _Key, _Tp>>,
           class            = enable_if_t<!__is_allocator<_Compare>::value, void>,
           class            = enable_if_t<__is_allocator<_Allocator>::value, void>>
@@ -2080,18 +2080,18 @@ template <class _InputIterator,
 multimap(_InputIterator, _InputIterator, _Allocator)
     -> multimap<__iter_key_type<_InputIterator>,
                 __iter_mapped_type<_InputIterator>,
-                less<__iter_key_type<_InputIterator>>,
+                less<>,
                 _Allocator>;
 
 #    if _LIBCPP_STD_VER >= 23
 template <ranges::input_range _Range, class _Allocator, class = enable_if_t<__is_allocator<_Allocator>::value, void>>
 multimap(from_range_t, _Range&&, _Allocator)
-    -> multimap<__range_key_type<_Range>, __range_mapped_type<_Range>, less<__range_key_type<_Range>>, _Allocator>;
+    -> multimap<__range_key_type<_Range>, __range_mapped_type<_Range>, less<>, _Allocator>;
 #    endif
 
 template <class _Key, class _Tp, class _Allocator, class = enable_if_t<__is_allocator<_Allocator>::value, void>>
 multimap(initializer_list<pair<_Key, _Tp>>,
-         _Allocator) -> multimap<remove_const_t<_Key>, _Tp, less<remove_const_t<_Key>>, _Allocator>;
+         _Allocator) -> multimap<remove_const_t<_Key>, _Tp, less<>, _Allocator>;
 #  endif
 
 #  ifndef _LIBCPP_CXX03_LANG
