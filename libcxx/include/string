@@ -1881,6 +1881,17 @@ public:
 
   _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX20 void __clear_and_shrink() _NOEXCEPT;
 
+  _LIBCPP_HIDE_FROM_ABI pointer __release_pointer() _NOEXCEPT {
+    if (!__is_long()) {
+      return nullptr;
+    }
+    pointer __pointer = __get_long_pointer();
+    __set_short_size(0);
+    traits_type::assign(__get_short_pointer()[0], value_type());
+    __annotate_new(0);
+    return __pointer;
+  }
+
 private:
   _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX20 void __shrink_or_extend(size_type __target_capacity);
 
