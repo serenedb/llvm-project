@@ -70,9 +70,9 @@ struct _LIBCPP_TEMPLATE_VIS default_delete {
   _LIBCPP_HIDE_FROM_ABI default_delete() {}
 #endif
   template <class _Up, __enable_if_t<is_convertible<_Up*, _Tp*>::value, int> = 0>
-  _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX23 default_delete(const default_delete<_Up>&) _NOEXCEPT {}
+  _LIBCPP_HIDE_FROM_ABI default_delete(const default_delete<_Up>&) _NOEXCEPT {}
 
-  _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX23 void operator()(_Tp* __ptr) const _NOEXCEPT {
+  _LIBCPP_HIDE_FROM_ABI void operator()(_Tp* __ptr) const _NOEXCEPT {
     static_assert(sizeof(_Tp) >= 0, "cannot delete an incomplete type");
     static_assert(!is_void<_Tp>::value, "cannot delete an incomplete type");
     delete __ptr;
@@ -93,11 +93,11 @@ public:
 #endif
 
   template <class _Up>
-  _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX23
+  _LIBCPP_HIDE_FROM_ABI
   default_delete(const default_delete<_Up[]>&, typename _EnableIfConvertible<_Up>::type* = 0) _NOEXCEPT {}
 
   template <class _Up>
-  _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX23 typename _EnableIfConvertible<_Up>::type
+  _LIBCPP_HIDE_FROM_ABI typename _EnableIfConvertible<_Up>::type
   operator()(_Up* __ptr) const _NOEXCEPT {
     static_assert(sizeof(_Up) >= 0, "cannot delete an incomplete type");
     delete[] __ptr;
@@ -236,7 +236,7 @@ public:
   _LIBCPP_HIDE_FROM_ABI unique_ptr(auto_ptr<_Up>&& __p) _NOEXCEPT : __ptr_(__p.release()), __deleter_() {}
 #endif
 
-  _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX23 unique_ptr& operator=(unique_ptr&& __u) _NOEXCEPT {
+  _LIBCPP_HIDE_FROM_ABI unique_ptr& operator=(unique_ptr&& __u) _NOEXCEPT {
     reset(__u.release());
     __deleter_ = std::forward<deleter_type>(__u.get_deleter());
     return *this;
@@ -246,7 +246,7 @@ public:
             class _Ep,
             class = _EnableIfMoveConvertible<unique_ptr<_Up, _Ep>, _Up>,
             class = _EnableIfDeleterAssignable<_Ep> >
-  _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX23 unique_ptr& operator=(unique_ptr<_Up, _Ep>&& __u) _NOEXCEPT {
+  _LIBCPP_HIDE_FROM_ABI unique_ptr& operator=(unique_ptr<_Up, _Ep>&& __u) _NOEXCEPT {
     reset(__u.release());
     __deleter_ = std::forward<_Ep>(__u.get_deleter());
     return *this;
@@ -266,9 +266,9 @@ public:
   unique_ptr& operator=(unique_ptr const&) = delete;
 #endif
 
-  _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX23 ~unique_ptr() { reset(); }
+  _LIBCPP_HIDE_FROM_ABI ~unique_ptr() { reset(); }
 
-  _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX23 unique_ptr& operator=(nullptr_t) _NOEXCEPT {
+  _LIBCPP_HIDE_FROM_ABI unique_ptr& operator=(nullptr_t) _NOEXCEPT {
     reset();
     return *this;
   }
@@ -545,7 +545,7 @@ public:
         __deleter_(std::forward<deleter_type>(__u.get_deleter())),
         __checker_(std::move(__u.__checker_)) {}
 
-  _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX23 unique_ptr& operator=(unique_ptr&& __u) _NOEXCEPT {
+  _LIBCPP_HIDE_FROM_ABI unique_ptr& operator=(unique_ptr&& __u) _NOEXCEPT {
     reset(__u.release());
     __deleter_ = std::forward<deleter_type>(__u.get_deleter());
     __checker_ = std::move(__u.__checker_);
@@ -565,7 +565,7 @@ public:
             class _Ep,
             class = _EnableIfMoveConvertible<unique_ptr<_Up, _Ep>, _Up>,
             class = _EnableIfDeleterAssignable<_Ep> >
-  _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX23 unique_ptr& operator=(unique_ptr<_Up, _Ep>&& __u) _NOEXCEPT {
+  _LIBCPP_HIDE_FROM_ABI unique_ptr& operator=(unique_ptr<_Up, _Ep>&& __u) _NOEXCEPT {
     reset(__u.release());
     __deleter_ = std::forward<_Ep>(__u.get_deleter());
     __checker_ = std::move(__u.__checker_);
@@ -578,9 +578,9 @@ public:
 #endif
 
 public:
-  _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX23 ~unique_ptr() { reset(); }
+  _LIBCPP_HIDE_FROM_ABI ~unique_ptr() { reset(); }
 
-  _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX23 unique_ptr& operator=(nullptr_t) _NOEXCEPT {
+  _LIBCPP_HIDE_FROM_ABI unique_ptr& operator=(nullptr_t) _NOEXCEPT {
     reset();
     return *this;
   }
@@ -635,13 +635,13 @@ public:
 };
 
 template <class _Tp, class _Dp, __enable_if_t<__is_swappable_v<_Dp>, int> = 0>
-inline _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX23 void
+inline _LIBCPP_HIDE_FROM_ABI void
 swap(unique_ptr<_Tp, _Dp>& __x, unique_ptr<_Tp, _Dp>& __y) _NOEXCEPT {
   __x.swap(__y);
 }
 
 template <class _T1, class _D1, class _T2, class _D2>
-inline _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX23 bool
+inline _LIBCPP_HIDE_FROM_ABI bool
 operator==(const unique_ptr<_T1, _D1>& __x, const unique_ptr<_T2, _D2>& __y) {
   return __x.get() == __y.get();
 }
@@ -687,7 +687,7 @@ operator<=>(const unique_ptr<_T1, _D1>& __x, const unique_ptr<_T2, _D2>& __y) {
 #endif
 
 template <class _T1, class _D1>
-inline _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX23 bool
+inline _LIBCPP_HIDE_FROM_ABI bool
 operator==(const unique_ptr<_T1, _D1>& __x, nullptr_t) _NOEXCEPT {
   return !__x;
 }
@@ -710,51 +710,51 @@ inline _LIBCPP_HIDE_FROM_ABI bool operator!=(nullptr_t, const unique_ptr<_T1, _D
 #endif // _LIBCPP_STD_VER <= 17
 
 template <class _T1, class _D1>
-inline _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX23 bool operator<(const unique_ptr<_T1, _D1>& __x, nullptr_t) {
+inline _LIBCPP_HIDE_FROM_ABI bool operator<(const unique_ptr<_T1, _D1>& __x, nullptr_t) {
   typedef typename unique_ptr<_T1, _D1>::pointer _P1;
   return less<_P1>()(__x.get(), nullptr);
 }
 
 template <class _T1, class _D1>
-inline _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX23 bool operator<(nullptr_t, const unique_ptr<_T1, _D1>& __x) {
+inline _LIBCPP_HIDE_FROM_ABI bool operator<(nullptr_t, const unique_ptr<_T1, _D1>& __x) {
   typedef typename unique_ptr<_T1, _D1>::pointer _P1;
   return less<_P1>()(nullptr, __x.get());
 }
 
 template <class _T1, class _D1>
-inline _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX23 bool operator>(const unique_ptr<_T1, _D1>& __x, nullptr_t) {
+inline _LIBCPP_HIDE_FROM_ABI bool operator>(const unique_ptr<_T1, _D1>& __x, nullptr_t) {
   return nullptr < __x;
 }
 
 template <class _T1, class _D1>
-inline _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX23 bool operator>(nullptr_t, const unique_ptr<_T1, _D1>& __x) {
+inline _LIBCPP_HIDE_FROM_ABI bool operator>(nullptr_t, const unique_ptr<_T1, _D1>& __x) {
   return __x < nullptr;
 }
 
 template <class _T1, class _D1>
-inline _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX23 bool operator<=(const unique_ptr<_T1, _D1>& __x, nullptr_t) {
+inline _LIBCPP_HIDE_FROM_ABI bool operator<=(const unique_ptr<_T1, _D1>& __x, nullptr_t) {
   return !(nullptr < __x);
 }
 
 template <class _T1, class _D1>
-inline _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX23 bool operator<=(nullptr_t, const unique_ptr<_T1, _D1>& __x) {
+inline _LIBCPP_HIDE_FROM_ABI bool operator<=(nullptr_t, const unique_ptr<_T1, _D1>& __x) {
   return !(__x < nullptr);
 }
 
 template <class _T1, class _D1>
-inline _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX23 bool operator>=(const unique_ptr<_T1, _D1>& __x, nullptr_t) {
+inline _LIBCPP_HIDE_FROM_ABI bool operator>=(const unique_ptr<_T1, _D1>& __x, nullptr_t) {
   return !(__x < nullptr);
 }
 
 template <class _T1, class _D1>
-inline _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX23 bool operator>=(nullptr_t, const unique_ptr<_T1, _D1>& __x) {
+inline _LIBCPP_HIDE_FROM_ABI bool operator>=(nullptr_t, const unique_ptr<_T1, _D1>& __x) {
   return !(nullptr < __x);
 }
 
 #if _LIBCPP_STD_VER >= 20
 template <class _T1, class _D1>
   requires three_way_comparable< typename unique_ptr<_T1, _D1>::pointer>
-_LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX23 compare_three_way_result_t<typename unique_ptr<_T1, _D1>::pointer>
+_LIBCPP_HIDE_FROM_ABI compare_three_way_result_t<typename unique_ptr<_T1, _D1>::pointer>
 operator<=>(const unique_ptr<_T1, _D1>& __x, nullptr_t) {
   return compare_three_way()(__x.get(), static_cast<typename unique_ptr<_T1, _D1>::pointer>(nullptr));
 }
