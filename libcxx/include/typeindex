@@ -66,7 +66,7 @@ class _LIBCPP_TEMPLATE_VIS type_index {
   const type_info* __t_;
 
 public:
-  _LIBCPP_HIDE_FROM_ABI type_index(const type_info& __y) _NOEXCEPT : __t_(&__y) {}
+  _LIBCPP_CONSTEXPR _LIBCPP_HIDE_FROM_ABI type_index(const type_info& __y) _NOEXCEPT : __t_(&__y) {}
 
   _LIBCPP_HIDE_FROM_ABI bool operator==(const type_index& __y) const _NOEXCEPT { return *__t_ == *__y.__t_; }
 #  if _LIBCPP_STD_VER <= 17
