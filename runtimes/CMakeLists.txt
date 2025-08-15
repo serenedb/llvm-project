@@ -123,7 +123,7 @@ filter_prefixed("${CMAKE_ASM_IMPLICIT_INCLUDE_DIRECTORIES}" ${LLVM_BINARY_DIR} C
 # Currently, we counteract this issue by adding -fno-sanitize=all flag in
 # the project specific code within */cmake/config-ix.cmake files but that's
 # brittle. We should ideally move this to runtimes/CMakeLists.txt.
-llvm_check_compiler_linker_flag(C "--unwindlib=none" CXX_SUPPORTS_UNWINDLIB_EQ_NONE_FLAG)
+set(CXX_SUPPORTS_UNWINDLIB_EQ_NONE_FLAG OFF)
 if (CXX_SUPPORTS_UNWINDLIB_EQ_NONE_FLAG)
   set(ORIG_CMAKE_REQUIRED_FLAGS "${CMAKE_REQUIRED_FLAGS}")
   set(CMAKE_REQUIRED_FLAGS "${CMAKE_REQUIRED_FLAGS} --unwindlib=none")

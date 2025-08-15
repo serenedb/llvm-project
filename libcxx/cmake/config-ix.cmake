@@ -13,7 +13,7 @@ include(CheckCSourceCompiles)
 # libunwind (and the compiler implicit -lunwind wouldn't succeed as the newly
 # built libunwind isn't installed yet). For those cases, it'd be good to
 # link with --unwindlib=none. Check if that option works.
-llvm_check_compiler_linker_flag(C "--unwindlib=none" CXX_SUPPORTS_UNWINDLIB_EQ_NONE_FLAG)
+set(CXX_SUPPORTS_UNWINDLIB_EQ_NONE_FLAG OFF)
 
 if (NOT LIBCXX_USE_COMPILER_RT)
   if(WIN32 AND NOT MINGW)

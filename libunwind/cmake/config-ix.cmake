@@ -9,7 +9,7 @@ include(CheckCSourceCompiles)
 # The compiler driver may be implicitly trying to link against libunwind, which
 # might not work if libunwind doesn't exist yet. Try to check if
 # --unwindlib=none is supported, and use that if possible.
-llvm_check_compiler_linker_flag(C "--unwindlib=none" CXX_SUPPORTS_UNWINDLIB_EQ_NONE_FLAG)
+set(CXX_SUPPORTS_UNWINDLIB_EQ_NONE_FLAG OFF)
 
 if (HAIKU)
   check_library_exists(root fopen "" LIBUNWIND_HAS_ROOT_LIB)
