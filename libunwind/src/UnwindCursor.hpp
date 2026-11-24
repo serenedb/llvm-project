@@ -1022,9 +1022,14 @@ private:
   bool getInfoFromDwarfSection(pint_t pc, const UnwindInfoSections &sects,
                                             uint32_t fdeSectionOffsetHint=0);
   int stepWithDwarfFDE(bool stage2) {
+    // The IP of a frame a signal interrupted is the next instruction to run,
+    // not a return address, so the CFI row starting at it applies.
+    pint_t pc = (pint_t)this->getReg(UNW_REG_IP);
+    if (_isSignalFrame)
+      ++pc;
     return DwarfInstructions<A, R>::stepWithDwarf(
-        _addressSpace, (pint_t)this->getReg(UNW_REG_IP),
-        (pint_t)_info.unwind_info, _registers, _isSignalFrame, stage2);
+        _addressSpace, pc, (pint_t)_info.unwind_info, _registers,
+        _isSignalFrame, stage2);
   }
 #endif
 
