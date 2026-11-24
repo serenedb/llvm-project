@@ -437,8 +437,9 @@ static bool checkForUnwindInfoSegment(const Elf_Phdr *phdr, size_t image_base,
 #endif
 }
 
-static int findUnwindSectionsByPhdr(struct dl_phdr_info *pinfo,
-                                    size_t pinfo_size, void *data) {
+[[maybe_unused]] static int findUnwindSectionsByPhdr(struct dl_phdr_info *pinfo,
+                                                     size_t pinfo_size,
+                                                     void *data) {
   auto cbdata = static_cast<dl_iterate_cb_data *>(data);
   if (pinfo->dlpi_phnum == 0 || cbdata->targetAddr < pinfo->dlpi_addr)
     return 0;
@@ -608,20 +609,12 @@ inline bool LocalAddressSpace::findUnwindSections(pint_t targetAddr,
 #if DLFO_EH_SEGMENT_TYPE != PT_GNU_EH_FRAME
 #error _dl_find_object retrieves an unexpected section type
 #endif
-  // We look-up `dl_find_object` dynamically at runtime to ensure backwards
-  // compatibility with earlier version of glibc not yet providing it. On older
-  // systems, we gracefully fallback to `dl_iterate_phdr`. Cache the pointer
-  // so we only look it up once. Do manual lock to avoid _cxa_guard_acquire.
-  static decltype(_dl_find_object) *dlFindObject;
-  static bool dlFindObjectChecked = false;
-  if (!dlFindObjectChecked) {
-    dlFindObject = reinterpret_cast<decltype(_dl_find_object) *>(
-        dlsym(RTLD_DEFAULT, "_dl_find_object"));
-    dlFindObjectChecked = true;
-  }
-  // Try to find the unwind info using `dl_find_object`
+  // Call `_dl_find_object` directly and trust its answer: it takes no lock
+  // and does not allocate, so unwinding works from a signal handler, while
+  // `dlsym` finds nothing in a static binary and `dl_iterate_phdr` takes the
+  // loader lock.
   dl_find_object findResult;
-  if (dlFindObject && dlFindObject((void *)targetAddr, &findResult) == 0) {
+  if (_dl_find_object((void *)targetAddr, &findResult) == 0) {
     if (findResult.dlfo_eh_frame == nullptr) {
       // Found an entry for `targetAddr`, but there is no unwind info.
       return false;
@@ -649,10 +642,12 @@ inline bool LocalAddressSpace::findUnwindSections(pint_t targetAddr,
     info.dwarf_section_length = SIZE_MAX;
     return true;
   }
-#endif
+  return false;
+#else
   dl_iterate_cb_data cb_data = {this, &info, targetAddr};
   int found = dl_iterate_phdr(findUnwindSectionsByPhdr, &cb_data);
   return static_cast<bool>(found);
+#endif
 #endif
 
   return false;
